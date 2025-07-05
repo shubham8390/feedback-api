@@ -25,6 +25,7 @@ const allowedOrigins = [
   };
 
 app.use(cors(corsOptions));
+app.options('/feedbacks', cors(corsOptions)); 
 app.use(express.json());
 
 // Protect all /feedbacks routes
