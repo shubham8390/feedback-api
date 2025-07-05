@@ -5,7 +5,26 @@ const apiAuth = require('./middleware/auth');
 
 const app = express();
 
-app.use(cors());
+
+const allowedOrigins = [
+    'https://feedback-viewer.netlify.app',
+    'http://localhost:3000'
+  ];
+
+  const corsOptions = {
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('CORS policy does not allow access from this origin.'));
+      }
+    },
+    credentials: true, // Allow cookies or auth headers
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'] 
+  };
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Protect all /feedbacks routes
